@@ -1,0 +1,46 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.1.0'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(25)
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencies {
+	implementation platform("org.springframework.ai:spring-ai-bom:2.0.0")
+	implementation platform('io.arconia:arconia-bom:0.28.0')
+	implementation platform('org.springframework.cloud:spring-cloud-dependencies:2025.0.0')
+	implementation platform('io.awspring.cloud:spring-cloud-aws-dependencies:4.0.0')
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.ai:spring-ai-starter-model-bedrock-converse'
+	implementation 'org.springframework.ai:spring-ai-client-chat'
+	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
+
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	testAndDevelopmentOnly 'io.arconia:arconia-dev-services-postgresql'
+	testAndDevelopmentOnly 'io.arconia:arconia-dev-services-rabbitmq'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
