@@ -1,0 +1,37 @@
+services:
+  myfridge-postgres:
+    image: postgres:16-alpine
+    container_name: myfridge-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-ai_image_processing_py}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  myfridge-rabbitmq:
+    image: rabbitmq:3.10-management
+    container_name: myfridge-postgres
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  myfridge-ai-image-processing:
+    image: ai-image-processing:0.0.1-SNAPSHOT
+    container_name: myfridge-ai-image-processing
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./services/ba_core/.env
+    environment:
+      SPRING_RABBITMQ_HOST: ba-rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: user
+      SPRING_RABBITMQ_PASSWORD: pass
+ #   depends_on:
+  #    ba-postgres:
+   #     condition: service_healthy
+   #   ba-rabbitmq:
+    #    condition: service_healthy
+volumes:
+  postgres_data:
