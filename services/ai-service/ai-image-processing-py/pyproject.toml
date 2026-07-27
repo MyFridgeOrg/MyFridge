@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-image-processing-py"
+version = "0.1.0"
+description = "Python FastAPI fridge image processing service"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "sqlalchemy[asyncio]",
+    "alembic",
+    "litellm",
+    "asyncpg",
+    "python-multipart",
+    "python-dotenv",
+    "boto3"
+
+]
+[tool.setuptools.packages.find]
+where = ["src"]
