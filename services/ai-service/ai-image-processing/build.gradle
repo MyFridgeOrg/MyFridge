@@ -35,6 +35,7 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	testAndDevelopmentOnly platform('io.arconia:arconia-bom:0.28.0')
 	testAndDevelopmentOnly 'io.arconia:arconia-dev-services-postgresql'
 	testAndDevelopmentOnly 'io.arconia:arconia-dev-services-rabbitmq'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -43,4 +44,7 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	// No real tests exist yet (TestAiImageProcessingApplication is a dev-launcher, not a JUnit test).
+	// Don't fail the build until actual tests are added.
+	failOnNoDiscoveredTests = false
 }
