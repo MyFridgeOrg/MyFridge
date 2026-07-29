@@ -1,0 +1,38 @@
+name: Java CI - ai-image-processing
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'epic/**'
+
+concurrency:
+  group: java-ai-image-processing-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      relevant: ${{ steps.filter.outputs.relevant }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect relevant file changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            relevant:
+              - 'services/ai-service/ai-image-processing/**'
+              - '.github/workflows/ai-image-processing-ci.yml'
+              - '.github/workflows/reusable-gradle-ci.yml'
+
+  build:
+    needs: changes
+    if: needs.changes.outputs.relevant == 'true'
+    uses: ./.github/workflows/reusable-gradle-ci.yml
+    with:
+      working-directory: services/ai-service/ai-image-processing

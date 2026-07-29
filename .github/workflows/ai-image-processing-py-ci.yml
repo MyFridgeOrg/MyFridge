@@ -1,0 +1,39 @@
+name: Python CI - ai-image-processing-py
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'epic/**'
+
+concurrency:
+  group: python-ai-image-processing-py-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      relevant: ${{ steps.filter.outputs.relevant }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect relevant file changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            relevant:
+              - 'services/ai-service/ai-image-processing-py/**'
+              - '.github/workflows/ai-image-processing-py-ci.yml'
+              - '.github/workflows/reusable-python-ci.yml'
+
+  build:
+    needs: changes
+    if: needs.changes.outputs.relevant == 'true'
+    uses: ./.github/workflows/reusable-python-ci.yml
+    with:
+      working-directory: services/ai-service/ai-image-processing-py
+      python-version: '3.14'
