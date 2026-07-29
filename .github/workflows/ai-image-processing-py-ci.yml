@@ -15,7 +15,7 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      relevant: ${{ steps.filter.outputs.relevant }}
+      relevant: ${{ steps.filter.outputs.service_changed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,7 +25,7 @@ jobs:
         id: filter
         with:
           filters: |
-            relevant:
+            service_changed:
               - 'services/ai-service/ai-image-processing-py/**'
               - '.github/workflows/ai-image-processing-py-ci.yml'
               - '.github/workflows/reusable-python-ci.yml'
