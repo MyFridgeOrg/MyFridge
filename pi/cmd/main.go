@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	cam := camera.NewLogitechCamera("/dev/video0", ".")
+	cam := camera.NewPiCamera(".")
 	coord := coordinator.New(cam)
 	ctx := context.Background()
 	coord.Run(ctx)
