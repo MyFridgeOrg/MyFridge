@@ -26,7 +26,7 @@ func (c *PiCamera) Capture(ctx context.Context) (models.SnapShot, error) {
 
 	cmd := exec.CommandContext(ctx, "rpicam-still",
 		"-o", finalPath,
-		"-t", "1",
+		"-t", "5000",
 		"--immediate",
 	)
 
