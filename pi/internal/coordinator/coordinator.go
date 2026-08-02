@@ -12,23 +12,37 @@ type camera interface {
 	Capture(ctx context.Context) (models.SnapShot, error)
 }
 
+type motionSensor interface {
+	// WaitForMotion blocks until a motion event is detected.
+	WaitForMotion(ctx context.Context) <-chan struct{}
+}
+
 // Coordinator orchestrates the motion-detection pipeline.
 type Coordinator struct {
-	//motionSensor
-	cam camera
+	motionSensor motionSensor
+	cam          camera
 }
 
 // New creates a Coordinator with the given dependencies.
-func New(cam camera) *Coordinator {
+func New(motionSensor motionSensor, cam camera) *Coordinator {
 	return &Coordinator{
-		cam: cam,
+		motionSensor: motionSensor,
+		cam:          cam,
 	}
 }
 
 func (c *Coordinator) Run(ctx context.Context) {
-	snapshot, err := c.cam.Capture(ctx)
-	if err != nil {
-		log.Fatalf("ERROR: %v", err)
+	events := c.motionSensor.WaitForMotion(ctx)
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-events:
+			snapshot, err := c.cam.Capture(ctx)
+			if err != nil {
+				log.Fatalf("ERROR: %v", err)
+			}
+			log.Printf("Successfully captured an image stored at: %s", snapshot.FilePath)
+		}
 	}
-	log.Printf("Successfully captured an image stored at: %s", snapshot.FilePath)
 }
