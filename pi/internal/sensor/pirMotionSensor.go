@@ -16,6 +16,7 @@ type PIRMotionSensor struct {
 
 func NewPIRMotionSensor(pinName string) *PIRMotionSensor {
 	if _, err := host.Init(); err != nil {
+		log.Fatal(err)
 		return nil
 	}
 
@@ -54,11 +55,6 @@ func (p *PIRMotionSensor) WaitForMotion(ctx context.Context) <-chan struct{} {
 						return
 					}
 				}
-			}
-			select {
-			case ch <- <-ctx.Done():
-				return
-			default:
 			}
 		}
 	}()

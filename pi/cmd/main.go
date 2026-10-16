@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"example.com/internal/camera"
 	"example.com/internal/coordinator"
@@ -9,6 +10,7 @@ import (
 )
 
 func main() {
+	fmt.Print(banner)
 	cam := camera.NewPiCamera(".")
 	sensor := sensor.NewPIRMotionSensor("4")
 	coord := coordinator.New(sensor, cam)

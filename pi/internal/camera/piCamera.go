@@ -21,7 +21,8 @@ func NewPiCamera(outputDir string) *PiCamera {
 }
 
 func (c *PiCamera) Capture(ctx context.Context) (models.SnapShot, error) {
-	fileName := fmt.Sprintf("motion_.jpg")
+	uuid := fmt.Sprintf("%d", time.Now().UnixNano())
+	fileName := fmt.Sprintf("motion_capture_%v.jpg", uuid)
 	finalPath := filepath.Join(c.outputDir, fileName)
 
 	cmd := exec.CommandContext(ctx, "rpicam-still",
