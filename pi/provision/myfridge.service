@@ -1,0 +1,10 @@
+[Unit]
+Description=MyFridge motion-triggered camera
+
+[Service]
+ExecStart=/opt/myfridge/myfridge
+StateDirectory=myfridge
+WorkingDirectory=/var/lib/myfridge
+
+[Install]
+WantedBy=multi-user.target
