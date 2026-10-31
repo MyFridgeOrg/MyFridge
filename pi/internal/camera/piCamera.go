@@ -25,13 +25,13 @@ func (c *PiCamera) Capture(ctx context.Context) (models.SnapShot, error) {
 	fileName := fmt.Sprintf("motion_capture_%v.jpg", uuid)
 	finalPath := filepath.Join(c.outputDir, fileName)
 
-	cmd := exec.CommandContext(ctx, "rpicam-still",
+	err := exec.CommandContext(ctx, "rpicam-still",
 		"-o", finalPath,
 		"-t", "5000",
 		"--immediate",
-	)
+	).Run()
 
-	if err := cmd.Run(); err != nil {
+	if err != nil {
 		return models.SnapShot{}, fmt.Errorf("CSI camera hardware failed execution: %w", err)
 	}
 
