@@ -25,11 +25,12 @@ dependencies {
 	implementation platform('io.awspring.cloud:spring-cloud-aws-dependencies:4.0.0')
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.ai:spring-ai-starter-model-bedrock-converse'
 	implementation 'org.springframework.ai:spring-ai-client-chat'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
-	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
+	// implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'  // disabled while testing without S3
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'

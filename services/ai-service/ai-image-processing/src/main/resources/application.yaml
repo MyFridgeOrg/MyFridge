@@ -43,3 +43,8 @@ spring:
           enabled: true
           image: rabbitmq:4-management
 
+management:
+  endpoint:
+    health:
+      show-details: always
+
